@@ -1,9 +1,10 @@
 from flask import Flask, render_template
+import numpy as np
 import pickle
 
 #initialize app and load model
 app = Flask(__name__)
-#model = pickle.load(open('model.pkl', 'rb')) #uncomment when pkl file is created
+model = pickle.load(open('model.pkl', 'rb'))
 
 #routes
 @app.route('/')
@@ -12,8 +13,10 @@ def home():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-	print('predict Not Implemented')
-	return None
+	int_features = [int(x) for x in request.form.values()]
+	final_features = [np.array(int_features)]
+	prediction = model.predict(final_features)
+	return render_template('index.html', prediction_text='Your kickstarter project is likely to: {}'.format(prediction[0]))
 
 #start the server and run on localhost:5000
 if __name__ == '__main__':
