@@ -14,6 +14,7 @@ def home():
 @app.route('/predict', methods=['POST'])
 def predict():
 	int_features = [int(x) for x in request.form.values()]
+	#data translate here
 	final_features = [np.array(int_features)]
 	prediction = model.predict(final_features)
 	return render_template('index.html', prediction_text='Your kickstarter project is likely to: {}'.format(prediction[0]))
