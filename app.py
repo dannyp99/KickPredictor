@@ -5,6 +5,7 @@ import pickle
 #initialize app and load model
 app = Flask(__name__)
 model = pickle.load(open('model.pkl', 'rb'))
+encoder = pickle.load(open('encoder.pkl', 'rb'))
 
 #routes
 @app.route('/')
