@@ -17,6 +17,7 @@ np.random.seed(seed)
 #load datafile and create pickle file.
 df = pd.read_csv('./kickstarter.csv')
 file = open("model.pkl", "wb")
+file2 = open("encoder.pkl", "wb")
 
 #declare encoder for the non-numeric fields to be a binary.
 encoder = OneHotEncoder()
@@ -46,5 +47,6 @@ score = cross_val_score(pipeline, X, y, cv=kf, scoring='accuracy').mean()
 print(score)
 
 #pickle the model for future use
-pkl.dump(encoder, file)
+pkl.dump(model, file)
+pkl.dump(encoder, file2)
 file.close()
