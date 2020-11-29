@@ -1,0 +1,27 @@
+#RegForm{
+
+    text-align: left;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    border-bottom: 1px solid black;
+    width: 50%;
+    border-color: grey;
+  
+    
+    }
+    
+
+    #RegForm3{
+
+        text-align: left;
+        border: 0;
+        outline: 0;
+        background: transparent;
+        border: 1px solid black;
+        width: 20%;
+        border-color: grey;
+      
+        
+        }
+        
