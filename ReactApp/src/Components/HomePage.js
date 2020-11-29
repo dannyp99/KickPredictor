@@ -12,8 +12,7 @@ export class HomePage extends Component {
                 State:'',
                 Category:'',
                 SubCategory:'',
-                Month:'',
-                Day:'',
+                Date: '',
                 Hour:'',
                 Goal:''
 
@@ -81,27 +80,32 @@ export class HomePage extends Component {
         })
     }
 
-
-    ChangeMonth = (event) =>{
+    ChangeDate = (event) => {
         this.setState({
-            Month:event.target.value
+            Date:event.target.value
+        })
+    }
+
+    // ChangeMonth = (event) =>{
+    //     this.setState({
+    //         Month:event.target.value
          
 
 
 
-        })
-    }
+    //     })
+    // }
 
 
-    ChangeDay = (event) =>{
-        this.setState({
-            Day:event.target.value
+    // ChangeDay = (event) =>{
+    //     this.setState({
+    //         Day:event.target.value
          
 
 
 
-        })
-    }
+    //     })
+    // }
 
 
     ChangeHour = (event) =>{
@@ -203,13 +207,32 @@ export class HomePage extends Component {
                         <tr><td><input id = "RegForm" placeholder = "Description" onChange = {this.DescriptionChange} /> </td></tr>
 
 
-                        <tr><td><input id = "RegForm" placeholder = "Category" onChange = {this.ChangeCategory}/> </td></tr>
+                        <tr><td>
+                            <label for="category">Category</label><select onChange = {this.ChangeCategory}>
+                                <option value="art">Art</option>
+                                <option value="comics">Comics</option>
+                                <option value="crafts">Crafts</option>
+                                <option value="dance">Dance</option>
+                                <option value="design">Design</option>
+                                <option value="fashion">Fashion</option>
+                                <option value="film & video">Film & Video</option>
+                                <option value="food">Food</option>
+                                <option value="games">Games</option>
+                                <option value="journalism">Journalism</option>
+                                <option value="music">Music</option>
+                                <option value="photography">Photography</option>
+                                <option value="publishing">Publishing</option>
+                                <option value="technology">Technology</option>
+                                <option value="theater">Theater</option>
+                            </select>
+                        </td>
+                        </tr>
 
                         <tr><td><input id = "RegForm" placeholder = "SubCategory" onChange = {this.ChangeSubCategory}/> </td></tr>
 
                         <tr><td><input id = "RegForm" placeholder = "Goal" onChange = {this.ChangeGoal}/> </td></tr>
 
-                        <tr><td><input id = "RegForm3" placeholder = "Month" onChange = {this.ChangeMonth} /><input id = "RegForm3" placeholder = "Day" onChange = {this.ChangeDay} /><input id = "RegForm3" placeholder = "Hour" onChange = {this.ChangeHour} /> </td></tr>
+                        <tr><td><label for="date">Starting Date & Time: &nbsp;</label><input id = "RegForm3" placeholder="YYYY-MM-dd" onChange = {this.ChangeDate}/> <input id = "RegForm3" placeholder = "Hour" onChange = {this.ChangeHour} /> </td></tr>
 
                         <tr><td><Button variant = "success" >Run Prediction</Button> </td></tr>
            
