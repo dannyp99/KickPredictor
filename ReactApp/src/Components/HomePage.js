@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {Table,Button,Form} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './HomePage.css'
+import Axios from 'axios'
 
 export class HomePage extends Component {
     constructor(props){
@@ -9,11 +10,13 @@ export class HomePage extends Component {
             this.state = {
                 ProjectName: '',
                 Description:'',
-                State:'',
-                Category:'',
+                State:'Alabama',
+                Category:'Art',
                 SubCategory:'',
-                Date: '',
-                Hour:'',
+                StartDate: '',
+                StartHour:'',
+                EndDate: '',
+                EndHour:'',
                 Goal:''
 
 
@@ -41,7 +44,7 @@ export class HomePage extends Component {
 
     DescriptionChange = (event) =>{
         this.setState({
-            Description:event.target.value
+            Description:  event.target.value.length
          
 
 
@@ -70,7 +73,7 @@ export class HomePage extends Component {
         })
     }
 
-    ChangSubCategory = (event) =>{
+    ChangeSubCategory = (event) =>{
         this.setState({
             SubCategory:event.target.value
          
@@ -80,9 +83,9 @@ export class HomePage extends Component {
         })
     }
 
-    ChangeDate = (event) => {
+    ChangeStartDate = (event) => {
         this.setState({
-            Date:event.target.value
+            StartDate:event.target.value
         })
     }
 
@@ -108,9 +111,9 @@ export class HomePage extends Component {
     // }
 
 
-    ChangeHour = (event) =>{
+    ChangeStartHour = (event) =>{
         this.setState({
-            Hour:event.target.value
+            StartHour:parseInt(event.target.value)
          
 
 
@@ -121,7 +124,7 @@ export class HomePage extends Component {
 
     ChangeGoal = (event) =>{
         this.setState({
-            Goal:event.target.value
+            Goal:parseInt(event.target.value)
          
 
 
@@ -129,6 +132,70 @@ export class HomePage extends Component {
         })
     }
 
+    ChangeEndDate = (event) => {
+        this.setState({
+            EndDate:event.target.value
+        })
+    }
+
+    ChangeEndHour = (event) => {
+        this.setState({
+            EndHour:event.target.value
+        })
+    }
+
+
+    // ProjectName: '',
+    //             Description:'',
+    //             State:'',
+    //             Category:'',
+    //             SubCategory:'',
+    //             Date: '',
+    //             Hour:'',
+    //             Goal:''
+
+    sendData = () =>{
+            
+            var startDate = this.state.StartDate === "" ? new Date() : new Date(this.state.StartDate)
+
+            var endDate = this.state.EndDate === "" ? new Date() : new Date(this.state.EndDate)
+
+            var Difference_In_Time = endDate.getTime() - startDate.getTime(); 
+  
+
+            var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+
+            console.log(Difference_In_Days)
+
+
+            console.log(endDate.getDay())
+            console.log(endDate.getMonth())
+
+
+            console.log("akljdfkaljdfklajslkf");
+            const url = "http://localhost:5000/predict"
+            Axios({
+                method: 'post',
+                url: url,
+                data: {
+                    form: {
+                        blurb_length:this.state.Description,
+                        goal:this.state.Goal,
+                        state:this.state.State,
+                        timeframe: Difference_In_Days,
+                        month: startDate.getMonth(),
+                        day: startDate.getDay(),
+                        hour: this.state.StartHour,
+                        category:this.state.Category,
+                        subcategory:this.state.SubCategory,
+                        
+                    },
+                }
+            });
+
+
+
+    }
 
 
 
@@ -232,10 +299,17 @@ export class HomePage extends Component {
 
                         <tr><td><input id = "RegForm" placeholder = "Goal" onChange = {this.ChangeGoal}/> </td></tr>
 
-                        <tr><td><label for="date">Starting Date & Time: &nbsp;</label><input id = "RegForm3" placeholder="YYYY-MM-dd" onChange = {this.ChangeDate}/> <input id = "RegForm3" placeholder = "Hour" onChange = {this.ChangeHour} /> </td></tr>
+                        <tr><td><label for="date">Starting Date & Time: &nbsp;</label><input id = "RegForm3" placeholder="YYYY-MM-dd" onChange = {this.ChangeStartDate}/> <input id = "RegForm3" placeholder = "Hour" onChange = {this.ChangeStartHour} /> </td></tr>
 
-                        <tr><td><Button variant = "success" >Run Prediction</Button> </td></tr>
-           
+                        <tr><td><label for="date">Ending Date & Time: &nbsp;</label><input id = "RegForm3" placeholder="YYYY-MM-dd" onChange = {this.ChangeEndDate}/> <input id = "RegForm3" placeholder = "Hour" onChange = {this.ChangeEndHour} /> </td></tr>
+
+                        <tr><td><Button variant = "success" onClick = {this.sendData}>Run Prediction</Button> </td></tr>
+        
+                                <td>
+
+                                    {/* {this.state.Prediction ? Insert Code Here : Insert Code here } */}
+
+                                </td>
                     </tbody>
                 </Table>
 

@@ -20,7 +20,9 @@ file = open("model.pkl", "wb")
 file2 = open("encoder.pkl", "wb")
 
 #declare encoder for the non-numeric fields to be a binary.
-encoder = OneHotEncoder()
+
+encoder = OneHotEncoder(handle_unknown=  "ignore")
+
 encoder.fit(df[['category', 'subcategory', 'month', 'day', 'hour', 'state']])
 
 #convert months and days to a numeric equivalent.
@@ -34,6 +36,8 @@ X = df.drop(columns=['Unnamed: 0', 'id', 'title', 'category', 'subcategory', 'bl
 columns = X.columns
 X = pd.DataFrame(X, columns=columns)
 y = df['success']
+
+print(X.loc[0])
 
 #separate training and testing data for the model.
 kf = KFold(n_splits=10)
