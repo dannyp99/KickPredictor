@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import numpy as np
 import pickle
 from flask_cors import CORS,cross_origin
@@ -10,6 +10,10 @@ import pandas as pd
 app = Flask(__name__)
 model = pickle.load(open('model.pkl', 'rb'))
 encoder = pickle.load(open('encoder.pkl', 'rb'))
+scaler = pickle.load(open('scaler.pkl', 'rb'))
+sample = pd.read_csv('./sampleEntry.csv')
+encoded_cols = ['category', 'subcategory', 'month', 'day', 'hour', 'state']
+droplist = ['state', 'category', 'subcategory']
 
 cors = CORS(app)
 
@@ -30,14 +34,6 @@ def after_request(response):
 	print("gjkhghjhkj",response.headers)
 	return response
 
-# @app.route('/pp', methods=['POST'])
-# @cross_origin()
-# def pp():
-# 	print(request.data)
-# 	return "leg"
-
-
-
 @app.route('/predict', methods=['POST'])
 @cross_origin()
 def predict():
@@ -46,17 +42,19 @@ def predict():
 	print(form)
 	df = pd.DataFrame(form, index = [0])
 	print(df)
+	transformed_cols = encoder.transform(df[encoded_cols])
+	for key in droplist:
+		if key in form:
+			del form[key]
+	nontransformed = list(form.values())
+	print(transformed_cols)
+	nontransformed.extend(*transformed_cols)
+	print(nontransformed)
+	sampleData = scaler.transform(np.array(nontransformed).reshape(1,-1))
+	prediction = model.predict(sampleData)
+	print(prediction)
+	return jsonify(str(prediction[0]))
 	
-	encoder.transform(df[['category', 'subcategory', 'month', 'day', 'hour', 'state']])
-	
-	# int_features = [int(x) for x in req['form'].values()]
-	# #data translate here
-	# final_features = [np.array(int_features)]
-	# prediction = model.predict(final_features)
-	# return render_template('index.html', prediction_text='Your kickstarter project is likely to: {}'.format(prediction[0]))
-	
-
-
 
 #start the server and run on localhost:5000
 if __name__ == '__main__':

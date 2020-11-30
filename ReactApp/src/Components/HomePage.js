@@ -17,6 +17,7 @@ export class HomePage extends Component {
                 StartHour:'',
                 EndDate: '',
                 EndHour:'',
+                Result: '',
                 Goal:''
 
 
@@ -144,16 +145,6 @@ export class HomePage extends Component {
         })
     }
 
-
-    // ProjectName: '',
-    //             Description:'',
-    //             State:'',
-    //             Category:'',
-    //             SubCategory:'',
-    //             Date: '',
-    //             Hour:'',
-    //             Goal:''
-
     sendData = () =>{
             
             var startDate = this.state.StartDate === "" ? new Date() : new Date(this.state.StartDate)
@@ -168,11 +159,9 @@ export class HomePage extends Component {
             console.log(Difference_In_Days)
 
 
-            console.log(endDate.getDay())
-            console.log(endDate.getMonth())
+            console.log(startDate.getDay())
+            console.log(startDate.getMonth())
 
-
-            console.log("akljdfkaljdfklajslkf");
             const url = "http://localhost:5000/predict"
             Axios({
                 method: 'post',
@@ -191,7 +180,21 @@ export class HomePage extends Component {
                         
                     },
                 }
+            }).then(resp => {
+                console.log(resp)
+                this.setState({
+                    blurb_length:this.state.Description,
+                    goal:this.state.Goal,
+                    state:this.state.State,
+                    timeframe: Difference_In_Days,
+                    month: startDate.getMonth(),
+                    day: startDate.getDay(),
+                    hour: this.state.StartHour,
+                    category:this.state.Category,
+                    subcategory:this.state.SubCategory,
+                    Result: resp.data})
             });
+                
 
 
 
@@ -304,12 +307,14 @@ export class HomePage extends Component {
                         <tr><td><label for="date">Ending Date & Time: &nbsp;</label><input id = "RegForm3" placeholder="YYYY-MM-dd" onChange = {this.ChangeEndDate}/> <input id = "RegForm3" placeholder = "Hour" onChange = {this.ChangeEndHour} /> </td></tr>
 
                         <tr><td><Button variant = "success" onClick = {this.sendData}>Run Prediction</Button> </td></tr>
-        
+                            {
+                                this.state.Result === '' ? <td></td> :
                                 <td>
 
-                                    {/* {this.state.Prediction ? Insert Code Here : Insert Code here } */}
+                                    {this.state.Result === 'True' ? <h1 style={{'color': 'green'}}> Your project will succeed! </h1> : <h1 style={{'color': 'red'}}> Your project will fail! </h1> }
 
                                 </td>
+                            }
                     </tbody>
                 </Table>
 
