@@ -47,9 +47,7 @@ def predict():
 		if key in form:
 			del form[key]
 	nontransformed = list(form.values())
-	print(transformed_cols)
 	nontransformed.extend(*transformed_cols)
-	print(nontransformed)
 	sampleData = scaler.transform(np.array(nontransformed).reshape(1,-1))
 	prediction = model.predict(sampleData)
 	print(prediction)

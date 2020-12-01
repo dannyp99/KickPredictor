@@ -36,8 +36,6 @@ columns = X.columns
 X = pd.DataFrame(X, columns=columns)
 y = df['success']
 
-print(X.loc[0])
-
 #separate training and testing data for the model.
 kf = KFold(n_splits=10)
 scaler = MinMaxScaler()
@@ -47,9 +45,9 @@ scaler.fit(X)
 model = HistGradientBoostingClassifier()#learning_rate=0.1, loss='binary_crossentropy', max_bins=255, max_depth=3, max_iter=100, max_leaf_nodes=31, min_samples_leaf=10)
 #hyperparameters had slightly lower results of 71.96 average accuracy
 model.fit(X,y)
-#pipeline = Pipeline([('scaler', scaler), ('HGB Classifier', model)])
-#score = cross_val_score(pipeline, X, y, cv=kf, scoring='accuracy').mean()
-#print(score)
+pipeline = Pipeline([('scaler', scaler), ('HGB Classifier', model)])
+score = cross_val_score(pipeline, X, y, cv=kf, scoring='accuracy').mean()
+print(score)
 
 #pickle the model for future use
 pkl.dump(model, file1)

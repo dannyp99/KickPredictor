@@ -208,7 +208,7 @@ export class HomePage extends Component {
     render() {
         return (
             <div>
-                <h1 style = {{'text-align':'center','color':'rgb(35, 214, 35)'}}>Kickstarter Classifier </h1>
+                <h1 style = {{'text-align':'center','color':'rgb(35, 214, 35)'}}>KickPredictor </h1>
 
             <form>
 

@@ -3,5 +3,3 @@ flask_cors
 numpy
 pandas
 sklearn
-pickle
-json
