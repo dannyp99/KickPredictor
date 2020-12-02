@@ -52,7 +52,6 @@ def predict():
 	prediction = model.predict(sampleData)
 	print(prediction)
 	return jsonify(str(prediction[0]))
-	
 
 #start the server and run on localhost:5000
 if __name__ == '__main__':
